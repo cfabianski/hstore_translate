@@ -4,10 +4,14 @@ require 'hstore_translate'
 require 'database_cleaner'
 DatabaseCleaner.strategy = :transaction
 
-MiniTest::Test = MiniTest::Unit::TestCase unless MiniTest.const_defined?(:Test) # Rails 4.0.x
+I18n.available_locales = [:en, :fr]
 
 class Post < ActiveRecord::Base
   translates :title
+end
+
+class PostDetailed < Post
+  translates :comment
 end
 
 class HstoreTranslate::Test < Minitest::Test
@@ -55,6 +59,7 @@ class HstoreTranslate::Test < Minitest::Test
       connection = establish_connection(db_config)
       connection.create_table(:posts, :force => true) do |t|
         t.column :title_translations, 'hstore'
+        t.column :comment_translations, 'hstore'
       end
     end
   end

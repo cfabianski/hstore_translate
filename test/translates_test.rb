@@ -77,7 +77,7 @@ class TranslatesTest < HstoreTranslate::Test
     p = Post.new(:title_translations => { "en" => "English Title" })
     p.disable_fallback
     I18n.with_locale(:fr) do
-      assert_equal(nil, p.title_fr)
+      assert_nil p.title_fr
     end
   end
 
@@ -144,5 +144,28 @@ class TranslatesTest < HstoreTranslate::Test
 
   def test_class_method_translates?
     assert_equal true, Post.translates?
+    assert_equal true, PostDetailed.translates?
+  end
+
+  def test_translate_post_detailed
+    p = PostDetailed.create!(
+      :title_translations => {
+        "en" => "Alice in Wonderland",
+        "fr" => "Alice au pays des merveilles"
+      },
+      :comment_translations => {
+        "en" => "Awesome book",
+        "fr" => "Un livre unique"
+      }
+    )
+
+    I18n.with_locale(:en) { assert_equal "Awesome book", p.comment }
+    I18n.with_locale(:en) { assert_equal "Alice in Wonderland", p.title }
+    I18n.with_locale(:fr) { assert_equal "Un livre unique", p.comment }
+    I18n.with_locale(:fr) { assert_equal "Alice au pays des merveilles", p.title }
+  end
+
+  def test_permitted_translated_attributes
+    assert_equal [:title_en, :title_fr, :comment_en, :comment_fr], PostDetailed.permitted_translated_attributes
   end
 end
