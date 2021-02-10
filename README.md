@@ -1,9 +1,9 @@
-[![Gem Version](https://badge.fury.io/rb/hstoretranslate.svg)](https://badge.fury.io/rb/hstoretranslate)
-[![Build Status](https://api.travis-ci.org/cfabianski/hstoretranslate.png)](https://travis-ci.org/cfabianski/hstoretranslate)
+[![Gem Version](https://badge.fury.io/rb/hstore_translate.svg)](https://badge.fury.io/rb/hstore_translate)
+[![Build Status](https://api.travis-ci.org/cfabianski/hstore_translate.png)](https://travis-ci.org/cfabianski/hstore_translate)
 [![License](http://img.shields.io/badge/license-mit-brightgreen.svg)](COPYRIGHT)
-[![Code Climate](https://codeclimate.com/github/cfabianski/hstoretranslate.png)](https://codeclimate.com/github/cfabianski/hstoretranslate)
+[![Code Climate](https://codeclimate.com/github/robworley/hstore_translate.png)](https://codeclimate.com/github/cfabianski/hstore_translate)
 
-# hstore Translate
+# Hstore Translate
 
 Rails I18n library for ActiveRecord model/data translation using PostgreSQL's
 hstore datatype. It provides an interface inspired by
@@ -12,13 +12,12 @@ maintain separate translation tables.
 
 ## Requirements
 
-- ActiveRecord >= 4.2.0
+- ActiveRecord > 4.2.0
 - I18n
-- MySQL support requires ActiveRecord >= 5 and MySQL >= 5.7.8.
 
 ## Installation
 
-gem install hstoretranslate
+gem install hstore_translate
 
 When using bundler, put it in your Gemfile:
 
@@ -26,16 +25,8 @@ When using bundler, put it in your Gemfile:
 source 'https://rubygems.org'
 
 gem 'activerecord'
-
-# PostgreSQL
 gem 'pg', :platform => :ruby
-gem 'activerecord-jdbcpostgresql-adapter', :platform => :jruby
-
-# or MySQL
-gem 'mysql2', :platform => :ruby
-gem 'activerecord-jdbcmysql-adapter', :platform => :jruby
-
-gem 'hstoretranslate'
+gem 'hstore_translate'
 ```
 
 ## Model translations
@@ -144,37 +135,4 @@ post.disable_fallback
 post.enable_fallback do
   post.title_nl # => This database rocks!
 end
-```
-
-## Enable blank value translations
-
-By default, empty String values are not stored, instead the locale is deleted.
-
-```ruby
-class Post < ActiveRecord::Base
-  translates :title
-end
-
-post.title_translations # => { en: 'Hello', fr: 'Bonjour' }
-post.title_en = ""
-post.title_translations # => { fr: 'Bonjour' }
-```
-
-Activating `allow_blank: true` enables to store empty String values.
-
-```ruby
-class Post < ActiveRecord::Base
-  translates :title, allow_blank: true
-end
-
-post.title_translations # => { en: 'Hello', fr: 'Bonjour' }
-post.title_en = ""
-post.title_translations # => { en: '', fr: 'Bonjour' }
-```
-
-`nil` value delete the locale key/value anyway.
-
-```ruby
-post.title_en = nil
-post.title_translations # => { fr: 'Bonjour' }
 ```
