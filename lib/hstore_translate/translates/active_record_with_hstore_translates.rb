@@ -1,8 +1,12 @@
-module HstoreTranslate
+# frozen_string_literal: true
+
+module
+   HstoreTranslate
   module Translates
     module ActiveRecordWithHstoreTranslate
       def respond_to?(symbol, include_all = false)
         return true if parse_translated_attribute_accessor(symbol)
+
         super(symbol, include_all)
       end
 

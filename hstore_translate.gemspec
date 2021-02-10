@@ -1,4 +1,6 @@
-$:.push File.expand_path('../lib', __FILE__)
+# frozen_string_literal: true
+
+$LOAD_PATH.push File.expand_path('lib', __dir__)
 require 'hstore_translate/version'
 
 Gem::Specification.new do |s|
@@ -11,6 +13,7 @@ Gem::Specification.new do |s|
   s.homepage          = 'https://github.com/cfabianski/hstore_translate'
   s.platform          = Gem::Platform::RUBY
   s.license           = 'MIT'
+  s.required_ruby_version = '>= 2.4'
 
   s.files             = Dir['lib/**/*.rb', 'README.md', 'MIT-LICENSE']
   s.test_files        = Dir['test/**/*']
@@ -18,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'activerecord', '>= 4.2.0'
 
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'minitest', '>= 4.0'
   s.add_development_dependency 'database_cleaner'
+  s.add_development_dependency 'minitest', '>= 4.0'
+  s.add_development_dependency 'rake'
 end
